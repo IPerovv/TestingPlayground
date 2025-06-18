@@ -1,41 +1,26 @@
-# Android Studio
-*.iml
-.gradle
-/local.properties
-/.idea/
-/.idea/*
+# --- Android-specific additions (not yet included above) ---
 
-# Specific files to keep
-!/.idea/description.*
-!/.idea/codeStyles
-!/.idea/runConfigurations
-!*.gradle
+# Build output directories for modules
+*/build/
 
-# OS files
-.DS_Store
-Thumbs.db
-
-# Build output
-/build/
-/app/build/
-/*/build/
-
-# External/native build
-.externalNativeBuild/
-.cxx/
-
-# Captures from device
-captures/
-
-# Others
+# APKs and output artifacts
 *.apk
 *.ap_
-*.dex
-*.class
-*.jar
-*.log
 
-# Signing
+# Compiled Java/Kotlin class files
+*.class
+*.dex
+*.jar
+
+# Java/Kotlin compilation artifacts
+*.log
+*.hprof
+
+# NDK / CMake / Native
+obj/
+.cxx/
+
+# Keystore and signing
 *.jks
 *.keystore
 key.properties
@@ -43,17 +28,22 @@ key.properties
 # Android Studio Profiling
 *.hprof
 
-# NDK
-obj/
+# Local test result files (optional, if you run tests locally)
+test-results/
+outputs/
 
-# Gradle Wrapper
-/gradle-wrapper.jar
-/gradle-wrapper.properties
+# Misc build artifacts
+*.zip
+*.aar
+*.toc
+*.aux
+*.tmp
 
-# Misc
-.idea/navEditor.xml
-.idea/assetWizardSettings.xml
-
-# Kotlin/Java specific
+# --- Kotlin-specific ---
 *.kt.*
 *.java.*
+
+# --- Backup / temp files ---
+*.orig
+*.swp
+*.swo
