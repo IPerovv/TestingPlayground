@@ -1,0 +1,59 @@
+# Android Studio
+*.iml
+.gradle
+/local.properties
+/.idea/
+/.idea/*
+
+# Specific files to keep
+!/.idea/description.*
+!/.idea/codeStyles
+!/.idea/runConfigurations
+!*.gradle
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build output
+/build/
+/app/build/
+/*/build/
+
+# External/native build
+.externalNativeBuild/
+.cxx/
+
+# Captures from device
+captures/
+
+# Others
+*.apk
+*.ap_
+*.dex
+*.class
+*.jar
+*.log
+
+# Signing
+*.jks
+*.keystore
+key.properties
+
+# Android Studio Profiling
+*.hprof
+
+# NDK
+obj/
+
+# Gradle Wrapper
+/gradle-wrapper.jar
+/gradle-wrapper.properties
+
+# Misc
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Kotlin/Java specific
+*.kt.*
+*.java.*

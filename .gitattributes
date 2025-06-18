@@ -1,0 +1,28 @@
+# Устанавливаем автоопределение текстовых файлов и нормализацию окончания строк
+* text=auto
+
+# Kotlin и Java исходники
+*.kt     text eol=lf
+*.java   text eol=lf
+
+# XML файлы (ресурсы, разметка, конфигурация)
+*.xml    text eol=lf
+
+# Gradle файлы и Kotlin DSL
+*.gradle text eol=lf
+*.kts    text eol=lf
+
+# Файлы настроек
+*.properties text eol=lf
+*.toml       text eol=lf
+
+# Документация
+*.md     text eol=lf
+*.txt    text eol=lf
+
+# Скрипты (если есть)
+*.sh     text eol=lf
+*.bat    text eol=crlf
+
+# Игнорируем изменения прав доступа (если ты на Windows)
+* -text diff
