@@ -48,6 +48,7 @@ proguard-rules.pro
 *.class
 *.dex
 *.jar
+!gradle-wrapper.jar
 
 # Java/Kotlin compilation artifacts
 *.hprof
