@@ -1,0 +1,24 @@
+name: Dummy ьфшт workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  dummy-job:
+    name: Dummy Job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Print hello message
+        run: echo "Hello from dummy workflow!"
+
+      - name: Simulate task
+        run: |
+          echo "Running some fake steps..."
+          sleep 2
+          echo "Done!"
