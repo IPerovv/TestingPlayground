@@ -1,7 +1,44 @@
-# --- Android-specific additions (not yet included above) ---
+# Gradle files
+.gradle/
+build/
 
-# Build output directories for modules
+# Local configuration files
+local.properties
+key.properties
+
+# Android Studio and IntelliJ IDEA files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Android Studio cache
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/gradle.xml
+.idea/usage.statistics.xml
+.idea/dictionaries/
+.idea/httpRequests/
+
+# Keystore and signing files
+*.jks
+*.keystore
+
+# Log files
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Build directories
+app/build/
 */build/
+
+# Proguard configuration files
+proguard-rules.pro
 
 # APKs and output artifacts
 *.apk
@@ -13,17 +50,12 @@
 *.jar
 
 # Java/Kotlin compilation artifacts
-*.log
 *.hprof
 
-# NDK / CMake / Native
+# Android NDK / CMake / Native
+ndkBuild/
 obj/
 .cxx/
-
-# Keystore and signing
-*.jks
-*.keystore
-key.properties
 
 # Android Studio Profiling
 *.hprof
@@ -39,11 +71,11 @@ outputs/
 *.aux
 *.tmp
 
-# --- Kotlin-specific ---
+# Kotlin/Java temp files
 *.kt.*
 *.java.*
 
-# --- Backup / temp files ---
+# Backup / temp files
 *.orig
 *.swp
 *.swo
