@@ -73,7 +73,16 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest --info
+        run: ./gradlew testDebugUnitTest
+
+      - name: Upload unit test reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: |
+            app/build/test-results/testDebugUnitTest/
+            app/build/reports/tests/testDebugUnitTest/
+  
 
   lint:
     name: Run Android Lint
@@ -102,3 +111,11 @@ jobs:
 
       - name: Run lint
         run: ./gradlew lintDebug
+
+      - name: Upload lint reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: |
+            app/build/reports/lint-results-debug.html
+            app/build/reports/lint-results-debug.xml
