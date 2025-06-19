@@ -163,7 +163,7 @@ jobs:
             app/build/outputs/androidTest-results/
             app/build/reports/androidTests/connected/
 
-  notify:
+  notify_tg:
     name: Send Telegram Notification
     needs: [ build, unit-tests, lint, instrumentation-tests ]
     runs-on: ubuntu-latest
@@ -186,15 +186,17 @@ jobs:
             EMOJI="⚠️"
           fi
           
-          MESSAGE="${EMOJI} *Android CI completed*\n\n"\
-          "🔧 *Build*: ${BUILD_RESULT}\n"\
-          "🧪 *Unit Tests*: ${UNIT_RESULT}\n"\
-          "🧹 *Lint*: ${LINT_RESULT}\n"\
-          "📱 *Instrumentation*: ${INSTRUMENTATION_RESULT}"
-  
+          MESSAGE=$(cat <<EOF
+          ${EMOJI} *Android CI completed*
+          
+          🔧 *Build*: ${BUILD_RESULT}
+          🧪 *Unit Tests*: ${UNIT_RESULT}
+          🧹 *Lint*: ${LINT_RESULT}
+          📱 *Instrumentation*: ${INSTRUMENTATION_RESULT}
+          EOF
+          )
+          
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-          -d chat_id="${TELEGRAM_CHAT_ID}" \
-          -d text="${MESSAGE}" \
-          -d parse_mode=Markdown
-  
-
+                  -d chat_id="${TELEGRAM_CHAT_ID}" \
+                  -d text="${MESSAGE}" \
+                  -d parse_mode=Markdown
