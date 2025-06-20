@@ -30,3 +30,6 @@ jobs:
       unit_result: ${{ needs['run-unit-tests'].result }}
       lint_result: ${{ needs['run-lint'].result }}
       instr_result: ${{ needs['run-instrumentation-tests'].result }}
+      repo: ${{ github.repository }}
+      branch: ${{ github.head_ref || github.ref_name }}
+      actor: ${{ github.actor }}
