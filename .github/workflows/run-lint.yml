@@ -5,9 +5,7 @@ on:
 jobs:
   run-lint:
     name: Run Android Lint
-    needs: build
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
