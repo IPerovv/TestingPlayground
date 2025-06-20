@@ -167,6 +167,7 @@ jobs:
     name: Send Telegram Notification
     needs: [ build, unit-tests, lint, instrumentation-tests ]
     runs-on: ubuntu-latest
+    if: always()
 
     steps:
       - name: Send Telegram message
