@@ -2,10 +2,9 @@ name: Android CI
 
 on:
   pull_request:
-    branches: [ aboba ]
+    branches: [ main ]
 
 jobs:
-
   build:
     uses: ./.github/workflows/build.yml
 
@@ -25,3 +24,9 @@ jobs:
     needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
     uses: ./.github/workflows/send-results.yml
     if: always()
+    secrets: inherit
+    with:
+      build_result: ${{ needs['build'].result }}
+      unit_result: ${{ needs['run-unit-tests'].result }}
+      lint_result: ${{ needs['run-lint'].result }}
+      instr_result: ${{ needs['run-instrumentation-tests'].result }}
