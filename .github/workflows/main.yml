@@ -7,21 +7,21 @@ on:
 jobs:
 
   build:
-    uses: ./.github/workflows/steps/build.yml
+    uses: ./.github/workflows/build.yml
 
   run-unit-tests:
     needs: build
-    uses: ./.github/workflows/steps/run-unit-tests.yml
+    uses: ./.github/workflows/run-unit-tests.yml
 
   run-lint:
     needs: build
-    uses: ./.github/workflows/steps/run-lint.yml
+    uses: ./.github/workflows/run-lint.yml
 
   run-instrumentation-tests:
     needs: build
-    uses: ./.github/workflows/steps/run-instrumentation-tests.yml
+    uses: ./.github/workflows/run-instrumentation-tests.yml
 
   send-results:
-    needs: [ build, unit-tests, lint, instrumentation-tests ]
-    uses: ./.github/workflows/steps/send-results.yml
+    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
     if: always()
+    uses: ./.github/workflows/send-results.yml

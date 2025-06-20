@@ -7,7 +7,6 @@ jobs:
   notify:
     name: Notify Telegram
     runs-on: ubuntu-latest
-    if: always()
     steps:
       - name: Format Telegram message
         id: format
