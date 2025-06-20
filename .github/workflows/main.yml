@@ -162,3 +162,42 @@ jobs:
           path: |
             app/build/outputs/androidTest-results/
             app/build/reports/androidTests/connected/
+
+  notify_tg:
+    name: Send Telegram Notification
+    needs: [ build, unit-tests, lint, instrumentation-tests ]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Send Telegram message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.DESK_TELEGRAM_BOT }}
+          TELEGRAM_CHAT_ID: ${{ secrets.MUSASHINO_GROUP_ID }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          UNIT_RESULT: ${{ needs.unit-tests.result }}
+          LINT_RESULT: ${{ needs.lint.result }}
+          INSTRUMENTATION_RESULT: ${{ needs.instrumentation-tests.result }}
+        run: |
+          if [[ "$BUILD_RESULT" == "success" && "$UNIT_RESULT" == "success" && "$LINT_RESULT" == "success" && "$INSTRUMENTATION_RESULT" == "success" ]]; then
+            EMOJI="✅"
+          elif [[ "$BUILD_RESULT" == "failure" || "$UNIT_RESULT" == "failure" || "$LINT_RESULT" == "failure" || "$INSTRUMENTATION_RESULT" == "failure" ]]; then
+            EMOJI="❌"
+          else
+            EMOJI="⚠️"
+          fi
+          
+          MESSAGE=$(cat <<EOF
+          ${EMOJI} *Android CI completed*
+          
+          🔧 *Build*: ${BUILD_RESULT}
+          🧪 *Unit Tests*: ${UNIT_RESULT}
+          🧹 *Lint*: ${LINT_RESULT}
+          📱 *Instrumentation*: ${INSTRUMENTATION_RESULT}
+          EOF
+          )
+          
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+                  -d chat_id="${TELEGRAM_CHAT_ID}" \
+                  -d text="${MESSAGE}" \
+                  -d parse_mode=Markdown
