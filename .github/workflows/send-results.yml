@@ -39,7 +39,10 @@ jobs:
           MESSAGE="${MESSAGE//$'\n'/\\n}"
           echo "message=$MESSAGE" >> $GITHUB_OUTPUT
 
-      - name: Call Telegram notify workflow
-        uses: ./.github/workflows/notify-telegram.yml
-        with:
-          message: ${{ steps.format.outputs.message }}
+  call-notify:
+    name: Send Telegram message
+    uses: ./.github/workflows/notify-telegram.yml
+    needs: notify
+    with:
+      message: ${{ needs.notify.outputs.message }}
+    secrets: inherit

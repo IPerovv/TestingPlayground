@@ -8,3 +8,4 @@ jobs:
   send-results:
     uses: ./.github/workflows/send-results.yml
     if: always()
+    secrets: inherit
