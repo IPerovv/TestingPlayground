@@ -37,6 +37,10 @@ jobs:
           UNIT_RESULT="${{ inputs.unit_result }}"
           LINT_RESULT="${{ inputs.lint_result }}"
           INSTRUMENTATION_RESULT="${{ inputs.instr_result }}"
+          
+          BRANCH_NAME="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
+          REPO_NAME="${GITHUB_REPOSITORY}"
+          ACTOR="${GITHUB_ACTOR}"
 
           if [[ "$BUILD_RESULT" == "success" && "$UNIT_RESULT" == "success" && "$LINT_RESULT" == "success" && "$INSTRUMENTATION_RESULT" == "success" ]]; then
             EMOJI="✅"
@@ -49,10 +53,17 @@ jobs:
           MESSAGE=$(cat <<EOF
           ${EMOJI} *Android CI completed*
 
+          _______________________________
           🔧 *Build*: $BUILD_RESULT
           🧪 *Unit Tests*: $UNIT_RESULT
           🧹 *Lint*: $LINT_RESULT
           📱 *Instrumentation*: $INSTRUMENTATION_RESULT
+          
+          _______________________________
+          📦 *Repo*: \`$REPO_NAME\`
+          🌿 *Branch*: \`$BRANCH_NAME\`
+          🙋 *Triggered by*: \`$ACTOR\`
+          
           EOF
           )
           echo "message<<EOF" >> $GITHUB_OUTPUT
