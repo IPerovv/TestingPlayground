@@ -1,0 +1,24 @@
+name: Build project
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-android
+
+      - name: Assemble Debug
+        run: ./gradlew assembleDebug --parallel --configuration-cache
+
+      - name: Upload build outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            app/build/outputs/
+            app/build/intermediates/
+            app/build/tmp/

@@ -1,0 +1,29 @@
+name: Run Android Lint
+on:
+  workflow_call:
+
+jobs:
+  run-lint:
+    name: Run Android Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-android
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: app/build/
+
+      - name: Run lint
+        run: ./gradlew lintDebug
+
+      - name: Upload lint reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: |
+            app/build/reports/lint-results-debug.html
+            app/build/reports/lint-results-debug.xml
