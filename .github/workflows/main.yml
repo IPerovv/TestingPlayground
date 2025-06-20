@@ -23,5 +23,5 @@ jobs:
 
   send-results:
     needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
-    if: always()
     uses: ./.github/workflows/send-results.yml
+    if: always()
