@@ -11,16 +11,6 @@ jobs:
 
       - uses: ./.github/actions/setup-android
 
-      - name: Cache Gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
-
       - name: Assemble Debug
         run: ./gradlew assembleDebug --parallel --configuration-cache
 
