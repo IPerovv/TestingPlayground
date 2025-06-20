@@ -19,6 +19,8 @@ jobs:
   notify:
     name: Notify Telegram
     runs-on: ubuntu-latest
+    outputs:
+      message: ${{ steps.format.outputs.message }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
