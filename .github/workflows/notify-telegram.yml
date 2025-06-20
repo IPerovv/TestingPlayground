@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  notify:
+  send-info-to-tg:
     runs-on: ubuntu-latest
     steps:
       - name: Send Telegram message

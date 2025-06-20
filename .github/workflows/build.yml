@@ -33,7 +33,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Assemble Debug
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --parallel --configuration-cache
 
       - name: Upload build outputs
         uses: actions/upload-artifact@v4

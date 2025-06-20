@@ -16,8 +16,8 @@ on:
         type: string
 
 jobs:
-  notify:
-    name: Notify Telegram
+  form-message:
+    name: Send workflow results
     runs-on: ubuntu-latest
     outputs:
       message: ${{ steps.format.outputs.message }}
@@ -59,10 +59,10 @@ jobs:
           echo "$MESSAGE" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-  call-notify:
+  notify-tg:
     name: Send Telegram message
     uses: ./.github/workflows/notify-telegram.yml
-    needs: notify
+    needs: form-message
     with:
-      message: ${{ needs.notify.outputs.message }}
+      message: ${{ needs.form-message.outputs.message }}
     secrets: inherit
