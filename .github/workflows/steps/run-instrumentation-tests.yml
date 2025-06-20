@@ -1,0 +1,47 @@
+name: Run Instrumentation Tests
+on:
+  workflow_call:
+
+jobs:
+  instrumentation-tests:
+    name: Run Instrumentation Tests
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: app/build/
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Run instrumentation tests on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: default
+          arch: x86_64
+          profile: pixel
+          emulator-options: -no-window -no-audio -no-boot-anim
+          script: ./gradlew connectedDebugAndroidTest
+
+      - name: Upload instrumentation test reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: instrumentation-test-report
+          path: |
+            app/build/outputs/androidTest-results/
+            app/build/reports/androidTests/connected/

@@ -1,0 +1,44 @@
+name: Send Telegram Results
+on:
+  workflow_call:
+    inputs: {}
+
+jobs:
+  notify:
+    name: Notify Telegram
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Format Telegram message
+        id: format
+        run: |
+          BUILD_RESULT="${{ needs.build.result }}"
+          UNIT_RESULT="${{ needs.run-unit-tests.result }}"
+          LINT_RESULT="${{ needs.run-lint.result }}"
+          INSTRUMENTATION_RESULT="${{ needs.run-instrumentation-tests.result }}"
+
+          if [[ "$BUILD_RESULT" == "success" && "$UNIT_RESULT" == "success" && "$LINT_RESULT" == "success" && "$INSTRUMENTATION_RESULT" == "success" ]]; then
+            EMOJI="✅"
+          elif [[ "$BUILD_RESULT" == "failure" || "$UNIT_RESULT" == "failure" || "$LINT_RESULT" == "failure" || "$INSTRUMENTATION_RESULT" == "failure" ]]; then
+            EMOJI="❌"
+          else
+            EMOJI="⚠️"
+          fi
+
+          MESSAGE=$(cat <<EOF
+          ${EMOJI} *Android CI completed*
+
+          🔧 *Build*: $BUILD_RESULT
+          🧪 *Unit Tests*: $UNIT_RESULT
+          🧹 *Lint*: $LINT_RESULT
+          📱 *Instrumentation*: $INSTRUMENTATION_RESULT
+            EOF
+            )
+            
+            MESSAGE="${MESSAGE//$'\n'/\\n}"
+            echo "message=$MESSAGE" >> $GITHUB_OUTPUT
+
+      - name: Send Telegram message
+        uses: ./.github/actions/notify-telegram-action
+        with:
+          message: ${{ steps.format.outputs.message }}
