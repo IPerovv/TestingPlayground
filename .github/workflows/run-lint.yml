@@ -21,10 +21,19 @@ jobs:
       - name: Run lint
         run: ./gradlew lintDebug
 
+      - name: Publish Lint Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Android Lint Results
+          path: app/build/reports/lint-results-debug.xml
+          reporter: android-lint
+          fail-on-error: true
+
       - name: Upload lint reports
         uses: actions/upload-artifact@v4
         with:
           name: lint-report
           path: |
             app/build/reports/lint-results-debug.html
-            app/build/reports/lint-results-debug.xml
+      
