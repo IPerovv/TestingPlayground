@@ -1,4 +1,4 @@
-name: Send Telegram Results
+name: Form message and send
 on:
   workflow_call:
     inputs:
@@ -14,10 +14,19 @@ on:
       instr_result:
         required: true
         type: string
+      repo:
+        required: true
+        type: string
+      branch:
+        required: true
+        type: string
+      actor:
+        required: true
+        type: string
 
 jobs:
   form-message:
-    name: Send workflow results
+    name: Form message to send
     runs-on: ubuntu-latest
     outputs:
       message: ${{ steps.format.outputs.message }}
@@ -28,16 +37,27 @@ jobs:
       - name: Format Telegram message
         id: format
         run: |
+          escape_markdown() {
+            echo "$1" | sed -E 's/([*_`\[])/\\\1/g'
+          }
+          
           echo "Build: ${{ inputs.build_result }}"
           echo "Unit Tests: ${{ inputs.unit_result }}"
           echo "Lint: ${{ inputs.lint_result }}"
           echo "Instrumentation: ${{ inputs.instr_result }}"
+          echo "repo: ${{ inputs.repo }}"
+          echo "branch: ${{ inputs.branch }}"
+          echo "actor: ${{ inputs.actor }}"
 
-          BUILD_RESULT="${{ inputs.build_result }}"
-          UNIT_RESULT="${{ inputs.unit_result }}"
-          LINT_RESULT="${{ inputs.lint_result }}"
-          INSTRUMENTATION_RESULT="${{ inputs.instr_result }}"
-
+          BUILD_RESULT=$(escape_markdown "${{ inputs.build_result }}")
+          UNIT_RESULT=$(escape_markdown "${{ inputs.unit_result }}")
+          LINT_RESULT=$(escape_markdown "${{ inputs.lint_result }}")
+          INSTRUMENTATION_RESULT=$(escape_markdown "${{ inputs.instr_result }}")
+        
+          REPO_NAME=$(escape_markdown "${{ inputs.repo }}")
+          BRANCH_NAME=$(escape_markdown "${{ inputs.branch }}")
+          ACTOR=$(escape_markdown "${{ inputs.actor }}")
+          
           if [[ "$BUILD_RESULT" == "success" && "$UNIT_RESULT" == "success" && "$LINT_RESULT" == "success" && "$INSTRUMENTATION_RESULT" == "success" ]]; then
             EMOJI="✅"
           elif [[ "$BUILD_RESULT" == "failure" || "$UNIT_RESULT" == "failure" || "$LINT_RESULT" == "failure" || "$INSTRUMENTATION_RESULT" == "failure" ]]; then
@@ -49,10 +69,16 @@ jobs:
           MESSAGE=$(cat <<EOF
           ${EMOJI} *Android CI completed*
 
+          _______________________________
           🔧 *Build*: $BUILD_RESULT
           🧪 *Unit Tests*: $UNIT_RESULT
           🧹 *Lint*: $LINT_RESULT
           📱 *Instrumentation*: $INSTRUMENTATION_RESULT
+          
+          _______________________________
+          📦 *Repo*: $REPO_NAME
+          🌿 *Branch*: $BRANCH_NAME
+          🙋 *Triggered by*: $ACTOR
           EOF
           )
           echo "message<<EOF" >> $GITHUB_OUTPUT
