@@ -17,6 +17,7 @@ jobs:
         with:
           name: build-artifacts
           path: app/build/
+        continue-on-error: true
 
       - name: Run lint
         run: ./gradlew lintDebug
