@@ -1,6 +1,7 @@
 name: Run Android Lint
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   run-lint:
