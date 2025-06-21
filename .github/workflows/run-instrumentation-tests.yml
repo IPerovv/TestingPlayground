@@ -17,6 +17,7 @@ jobs:
         with:
           name: build-artifacts
           path: app/build/
+        continue-on-error: true
 
       - name: Run instrumentation tests on emulator
         uses: reactivecircus/android-emulator-runner@v2
