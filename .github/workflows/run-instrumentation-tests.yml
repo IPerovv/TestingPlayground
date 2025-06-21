@@ -1,6 +1,7 @@
 name: Run Instrumentation Tests
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   instrumentation-tests:
