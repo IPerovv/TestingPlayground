@@ -1,4 +1,4 @@
-name: Android CI
+name: On PR Android Workflow
 
 on:
   pull_request:
