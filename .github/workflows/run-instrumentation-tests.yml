@@ -28,10 +28,20 @@ jobs:
           emulator-options: -no-window -no-audio -no-boot-anim
           script: ./gradlew connectedDebugAndroidTest
 
+      - name: Publish Instrumentation Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Instrumentation Test Results
+          path: app/build/outputs/androidTest-results/**/*.xml
+          reporter: java-junit
+          fail-on-error: true
+          list-tests: failed
+          list-suites: failed
+
       - name: Upload instrumentation test reports
         uses: actions/upload-artifact@v4
         with:
           name: instrumentation-test-report
           path: |
             app/build/outputs/androidTest-results/
-            app/build/reports/androidTests/connected/
