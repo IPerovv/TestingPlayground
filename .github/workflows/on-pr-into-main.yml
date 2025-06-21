@@ -6,23 +6,23 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/reusable/build.yml
 
   run-unit-tests:
     needs: build
-    uses: ./.github/workflows/run-unit-tests.yml
+    uses: ./.github/workflows/reusable/tests/run-unit-tests.yml
 
   run-lint:
     needs: build
-    uses: ./.github/workflows/run-lint.yml
+    uses: ./.github/workflows/reusable/tests/run-lint.yml
 
   run-instrumentation-tests:
     needs: build
-    uses: ./.github/workflows/run-instrumentation-tests.yml
+    uses: ./.github/workflows/reusable/tests/run-instrumentation-tests.yml
 
   send-results:
     needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
-    uses: ./.github/workflows/send-results.yml
+    uses: ./.github/workflows/reusable/send-results.yml
     if: always()
     secrets: inherit
     with:

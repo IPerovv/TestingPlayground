@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/setup-android
+      - uses: ./.github/actions/reusable/setup-android
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4

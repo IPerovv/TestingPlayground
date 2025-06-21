@@ -1,15 +1,15 @@
-name: Run unit tests
+name: Run Android Lint
 on:
   workflow_call:
 
 jobs:
-  run-unit-tests:
-    name: Run unit tests
+  run-lint:
+    name: Run Android Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/setup-android
+      - uses: ./.github/actions/reusable/setup-android
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -18,13 +18,13 @@ jobs:
           path: app/build/
         continue-on-error: true
 
-      - name: Run unit tests
-        run: ./gradlew testDebugUnitTest
+      - name: Run lint
+        run: ./gradlew lintDebug
 
-      - name: Upload unit test reports
+      - name: Upload lint reports
         uses: actions/upload-artifact@v4
         with:
-          name: unit-test-report
+          name: lint-report
           path: |
-            app/build/test-results/testDebugUnitTest/
-            app/build/reports/tests/testDebugUnitTest/
+            app/build/reports/lint-results-debug.html
+            app/build/reports/lint-results-debug.xml

@@ -34,7 +34,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Format Telegram message
+      - name: Format message
         id: format
         run: |
           escape_markdown() {
@@ -87,7 +87,7 @@ jobs:
 
   notify-tg:
     name: Send Telegram message
-    uses: ./.github/workflows/notify-telegram.yml
+    uses: ./.github/workflows/reusable/notifiers/notify-telegram.yml
     needs: form-message
     with:
       message: ${{ needs.form-message.outputs.message }}

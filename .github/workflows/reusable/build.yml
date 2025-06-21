@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/setup-android
+      - uses: ./.github/actions/reusable/setup-android
 
       - name: Assemble Debug
         run: ./gradlew assembleDebug --parallel --configuration-cache
