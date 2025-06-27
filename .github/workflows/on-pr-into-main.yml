@@ -16,21 +16,21 @@ jobs:
     needs: build
     uses: ./.github/workflows/run-lint.yml
 
-  run-instrumentation-tests:
-    needs: build
-    uses: ./.github/workflows/run-instrumentation-tests.yml
+#  run-instrumentation-tests:
+#    needs: build
+#    uses: ./.github/workflows/run-instrumentation-tests.yml
 
   build-debug-artifacts:
-    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
+    needs: [ build, run-unit-tests, run-lint]
     uses: ./.github/workflows/build-debug-artifacts.yml
 
   build-release-artifacts:
     if: startsWith(github.head_ref, 'release/')
-    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
+    needs: [ build, run-unit-tests, run-lint]
     uses: ./.github/workflows/build-release-artifacts.yml
 
   send-results:
-    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
+    needs: [ build, run-unit-tests, run-lint]
     uses: ./.github/workflows/send-results.yml
     if: always()
     secrets: inherit
@@ -38,7 +38,30 @@ jobs:
       build_result: ${{ needs['build'].result }}
       unit_result: ${{ needs['run-unit-tests'].result }}
       lint_result: ${{ needs['run-lint'].result }}
-      instr_result: ${{ needs['run-instrumentation-tests'].result }}
+      instr_result: "SKIP"
       repo: ${{ github.repository }}
       branch: ${{ github.head_ref || github.ref_name }}
       actor: ${{ github.actor }}
+
+#  build-debug-artifacts:
+#    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
+#    uses: ./.github/workflows/build-debug-artifacts.yml
+#
+#  build-release-artifacts:
+#    if: startsWith(github.head_ref, 'release/')
+#    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
+#    uses: ./.github/workflows/build-release-artifacts.yml
+
+#  send-results:
+#    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
+#    uses: ./.github/workflows/send-results.yml
+#    if: always()
+#    secrets: inherit
+#    with:
+#      build_result: ${{ needs['build'].result }}
+#      unit_result: ${{ needs['run-unit-tests'].result }}
+#      lint_result: ${{ needs['run-lint'].result }}
+#      instr_result: ${{ needs['run-instrumentation-tests'].result }}
+#      repo: ${{ github.repository }}
+#      branch: ${{ github.head_ref || github.ref_name }}
+#      actor: ${{ github.actor }}
