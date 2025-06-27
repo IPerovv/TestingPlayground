@@ -20,6 +20,15 @@ jobs:
     needs: build
     uses: ./.github/workflows/run-instrumentation-tests.yml
 
+  build-debug-artifacts:
+    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
+    uses: ./.github/workflows/build-debug-artifacts.yml
+
+  build-release-artifacts:
+    if: startsWith(github.head_ref, 'release/')
+    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
+    uses: ./.github/workflows/build-release-artifacts.yml
+
   send-results:
     needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
     uses: ./.github/workflows/send-results.yml
