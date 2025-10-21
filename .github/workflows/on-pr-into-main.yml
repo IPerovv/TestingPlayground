@@ -20,9 +20,10 @@ jobs:
 #    needs: build
 #    uses: ./.github/workflows/run-instrumentation-tests.yml
 
-  build-debug-artifacts:
+  build-debug-apk:
+    if: success()
     needs: [ build, run-unit-tests, run-lint]
-    uses: ./.github/workflows/build-debug-artifacts.yml
+    uses: ./.github/workflows/build-debug-apk.yml
 
   build-release-artifacts:
     if: startsWith(github.head_ref, 'release/')
@@ -45,7 +46,7 @@ jobs:
 
 #  build-debug-artifacts:
 #    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
-#    uses: ./.github/workflows/build-debug-artifacts.yml
+#    uses: ./.github/workflows/build-debug-apk.yml
 #
 #  build-release-artifacts:
 #    if: startsWith(github.head_ref, 'release/')
