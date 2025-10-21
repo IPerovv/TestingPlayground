@@ -21,12 +21,24 @@ jobs:
       - name: Run instrumentation tests on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
-          target: default
+          api-level: 31
+          target: google_apis
           arch: x86_64
-          profile: pixel
-          emulator-options: -no-window -no-audio -no-boot-anim
-          script: ./gradlew connectedDebugAndroidTest
+          profile: Nexus 5
+          ram-size: 2048M
+          disk-size: 4096M
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          emulator-boot-timeout: 90000
+          disable-animations: true
+          script: |
+            adb wait-for-device
+            echo "Waiting 20s extra for system stability..."
+            sleep 20
+            adb shell getprop sys.boot_completed
+            adb shell input keyevent 82 || true  # don’t fail if input service not ready
+            ./gradlew --no-daemon --stacktrace connectedDebugAndroidTest
+      
+      
 
       - name: Upload instrumentation test reports
         uses: actions/upload-artifact@v4
