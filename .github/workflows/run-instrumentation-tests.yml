@@ -6,8 +6,17 @@ jobs:
   instrumentation-tests:
     name: Run Instrumentation Tests
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm || echo "No KVM device found!"
 
       - uses: ./.github/actions/setup-android
 
@@ -24,12 +33,13 @@ jobs:
           api-level: 31
           target: google_apis
           arch: x86_64
-          profile: Nexus 5
+          profile: pixel_5
           ram-size: 2048M
           disk-size: 4096M
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          emulator-boot-timeout: 90000
           disable-animations: true
+          emulator-boot-timeout: 120000
+          emulator-options: -no-window -gpu off -no-snapshot -noaudio -no-boot-anim
+
           script: |
             adb wait-for-device
             echo "Waiting 20s extra for system stability..."
@@ -37,8 +47,6 @@ jobs:
             adb shell getprop sys.boot_completed
             adb shell input keyevent 82 || true  # don’t fail if input service not ready
             ./gradlew --no-daemon --stacktrace connectedDebugAndroidTest
-      
-      
 
       - name: Upload instrumentation test reports
         uses: actions/upload-artifact@v4
