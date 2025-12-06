@@ -2,8 +2,8 @@
 
 [![On PR Android Workflow](https://github.com/IPerovv/TestingPlayground/actions/workflows/on-pr-into-main.yml/badge.svg)](https://github.com/IPerovv/TestingPlayground/actions/workflows/on-pr-into-main.yml)
 
-## 1. Выбранная / Предлагаемая тема
-**Автоматизация CI/CD процессов Android-приложений с использованием Gitlab CI: сборка, тестирование, анализ и уведомления**
+## 1. Выбранная тема
+**Автоматизация CI/CD процессов Android-приложений с использованием GitHub Actions: сборка, тестирование, анализ и уведомления**
 
 ---
 
@@ -13,7 +13,7 @@
 ---
 
 ## 3. Краткое описание проекта
-Проект представляет собой CI/CD pipeline для Android-приложения, реализованный на Gitlab CI.  
+Проект представляет собой CI/CD pipeline для Android-приложения, реализованный на GitHub Actions.  
 Основная цель — обеспечить полную автоматизацию процесса проверки Pull Request’ов в ветку `main`, включая:
 
 1. Сборку проекта и выгрузку артефактов.
@@ -36,7 +36,7 @@
 
 ### DevOps инструменты
 
-- **CI/CD:** GitLab CI
+- **CI/CD:** GitHub Actions
 - **Контейнеризация и окружение:**  GitHub-hosted runners
 - **Тестирование:**
     - **Юнит-тесты:** JUnit
