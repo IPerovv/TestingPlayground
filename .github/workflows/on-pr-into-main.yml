@@ -20,8 +20,13 @@ jobs:
     needs: build
     uses: ./.github/workflows/run-instrumentation-tests.yml
 
-  send-results:
+  build-debug-artifacts:
+    if: success()
     needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests ]
+    uses: ./.github/workflows/build-debug-apk.yml
+
+  send-results:
+    needs: [ build, run-unit-tests, run-lint, run-instrumentation-tests, build-debug-artifacts ]
     uses: ./.github/workflows/send-results.yml
     if: always()
     secrets: inherit
@@ -33,3 +38,30 @@ jobs:
       repo: ${{ github.repository }}
       branch: ${{ github.head_ref || github.ref_name }}
       actor: ${{ github.actor }}
+
+##### ДЛЯ ОТЛАДКИ БЕЗ ИНСТРУМЕНТАЛЬНЫХ ТЕСТОВ
+
+#  build-debug-apk:
+#    if: success()
+#    needs: [ build, run-unit-tests, run-lint]
+#    uses: ./.github/workflows/build-debug-apk.yml
+
+#  send-results:
+#    needs: [ build, run-unit-tests, run-lint]
+#    uses: ./.github/workflows/send-results.yml
+#    if: always()
+#    secrets: inherit
+#    with:
+#      build_result: ${{ needs['build'].result }}
+#      unit_result: ${{ needs['run-unit-tests'].result }}
+#      lint_result: ${{ needs['run-lint'].result }}
+#      instr_result: "SKIP"
+#      repo: ${{ github.repository }}
+#      branch: ${{ github.head_ref || github.ref_name }}
+#      actor: ${{ github.actor }}
+
+# Нужно будет унести в релиз пайплайн, в этом не нужно
+#  build-release-artifacts:
+#    if: startsWith(github.head_ref, 'release/')
+#    needs: [ build, run-unit-tests, run-lint]
+#    uses: ./.github/workflows/build-release-artifacts.yml
