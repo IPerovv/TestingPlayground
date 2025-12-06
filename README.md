@@ -1,6 +1,5 @@
 # Описание курсового проекта
 
-## 0. Badge
 [![On PR Android Workflow](https://github.com/IPerovv/TestingPlayground/actions/workflows/on-pr-into-main.yml/badge.svg)](https://github.com/IPerovv/TestingPlayground/actions/workflows/on-pr-into-main.yml)
 
 ## 1. Выбранная / Предлагаемая тема
